@@ -1,4 +1,4 @@
-﻿namespace HackerNews.Api.Services;
+﻿namespace HackerNews.Api.Cache;
 
 public class BestIdsThreadSafeCache
 {

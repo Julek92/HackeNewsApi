@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HackerNews.Api", "HackerNews.Api\HackerNews.Api.csproj", "{D78DF6AD-14B6-4648-843E-90320EF18333}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{EAC110E1-EE42-4F0B-B79B-0EF27A4524B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerformanceTests", "PerformanceTests\PerformanceTests.csproj", "{7AADC17E-4A9A-4244-86E6-13892ACBCE10}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +16,12 @@ Global
 		{D78DF6AD-14B6-4648-843E-90320EF18333}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D78DF6AD-14B6-4648-843E-90320EF18333}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D78DF6AD-14B6-4648-843E-90320EF18333}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AADC17E-4A9A-4244-86E6-13892ACBCE10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AADC17E-4A9A-4244-86E6-13892ACBCE10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AADC17E-4A9A-4244-86E6-13892ACBCE10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AADC17E-4A9A-4244-86E6-13892ACBCE10}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7AADC17E-4A9A-4244-86E6-13892ACBCE10} = {EAC110E1-EE42-4F0B-B79B-0EF27A4524B8}
 	EndGlobalSection
 EndGlobal

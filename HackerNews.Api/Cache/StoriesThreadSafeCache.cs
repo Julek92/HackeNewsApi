@@ -1,7 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using HackerNews.Api.Models;
 
-namespace HackerNews.Api.Services;
+namespace HackerNews.Api.Cache;
 
 public class StoriesThreadSafeCache
 {

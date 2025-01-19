@@ -7,7 +7,6 @@ namespace HackerNews.Api.Services;
 public interface IHackerNewsClient
 {
     Task<IEnumerable<long>> GetBestIds(CancellationToken cancellationToken);
-    IAsyncEnumerable<Story> GetStories(HashSet<long> ids, CancellationToken cancellationToken);
     Task<Story> GetStory(long id, CancellationToken cancellationToken);
 }
 
@@ -41,22 +40,9 @@ public class HackerNewsClient : IHackerNewsClient
         return stories;
     }
 
-    public async IAsyncEnumerable<Story> GetStories(HashSet<long> ids, [EnumeratorCancellation] CancellationToken cancellationToken)
-    {
-        var tasks = ids.Select(id => GetStory(id, cancellationToken));
-
-        var stories = await Task.WhenAll(tasks);
-
-        foreach (var story in stories.OrderBy(x => x.Score).Reverse())
-        {
-            yield return story;
-        }
-    }
-
     public async Task<Story> GetStory(long id, CancellationToken cancellationToken)
     {
         var response = await _httpClient.GetAsync(GetStoryUrl(id), cancellationToken);
-
         if (!response.IsSuccessStatusCode)
         {
             throw new HttpRequestException($"Request failed with status code: {response.StatusCode}");

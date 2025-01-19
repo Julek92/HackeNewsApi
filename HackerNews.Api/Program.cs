@@ -1,3 +1,4 @@
+using HackerNews.Api.Cache;
 using HackerNews.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,3 +30,10 @@ app.UseRouting();
 app.MapControllers();
 
 app.Run();
+
+namespace HackerNews.Api
+{
+    public partial class Program
+    {
+    }
+}

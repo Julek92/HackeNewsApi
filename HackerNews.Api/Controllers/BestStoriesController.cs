@@ -15,8 +15,15 @@ public class BestStoriesController : Controller
         _bestStoryRetriever = bestStoryRetriever;
     }
     [HttpGet("{numberOfElements:int?}")]
-    public IAsyncEnumerable<Story> Get(int? numberOfElements = null, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<Story>> Get(int? numberOfElements = null, CancellationToken cancellationToken = default)
     {
-        return _bestStoryRetriever.Get(numberOfElements, cancellationToken);
+        var asyncStories = _bestStoryRetriever.Get(numberOfElements, cancellationToken);
+        var stories = new List<Story>();
+        await foreach (var story in asyncStories)
+        {
+            stories.Add(story);
+        }
+
+        return stories.OrderBy(s => s.Score).Reverse();
     }
 }

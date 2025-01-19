@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using HackerNews.Api.Cache;
 using HackerNews.Api.Models;
 
 namespace HackerNews.Api.Services;
@@ -29,10 +30,8 @@ public class BestStoryRetriever : IBestStoryRetriever
         var idsToLoad = ids.ToHashSet();
 
         var tasks = idsToLoad.Select(id => _storiesCache.GetOrAddAsync(id, () => _client.GetStory(id, cancellationToken)));
-        //var stories = await Task.WhenAll(tasks);
-        var tsts = Task.WhenEach(tasks);
-        //var stories = _client.GetStories(idsToLoad, cancellationToken);
-        await foreach (var story in tsts)
+        var stories = Task.WhenEach(tasks);
+        await foreach (var story in stories)
         {
             yield return await story;
         }
