@@ -1,3 +1,4 @@
+using HackerNews.Api.Cache;
 using HackerNews.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +8,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient<IHackerNewsClient, HackerNewsClient>(c =>
     c.BaseAddress = new Uri("https://hacker-news.firebaseio.com/v0/"));
 builder.Services.AddScoped<IBestStoryRetriever, BestStoryRetriever>();
+var cacheLifetimeInSeconds = builder.Configuration.GetValue<int>("CacheLifetimeSeconds");
+var cacheLifetime = TimeSpan.FromSeconds(cacheLifetimeInSeconds);
+builder.Services.AddSingleton<BestIdsThreadSafeCache>(_ => new BestIdsThreadSafeCache(cacheLifetime));
+builder.Services.AddSingleton<StoriesThreadSafeCache>(_ => new StoriesThreadSafeCache(cacheLifetime));
 
 var app = builder.Build();
 
@@ -25,3 +30,10 @@ app.UseRouting();
 app.MapControllers();
 
 app.Run();
+
+namespace HackerNews.Api
+{
+    public partial class Program
+    {
+    }
+}
