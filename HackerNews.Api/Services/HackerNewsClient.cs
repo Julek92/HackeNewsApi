@@ -15,6 +15,9 @@ public class HackerNewsClient : IHackerNewsClient
     private readonly HttpClient _httpClient;
     private const string GetBestStoriesUrl = "beststories.json";
     private string GetStoryUrl(long id) => $"item/{id}.json";
+    
+    // 4 request at one time to not kill Hacker Rank API
+    private readonly SemaphoreSlim _semaphore = new(4, 4);
 
     public HackerNewsClient(HttpClient httpClient)
     {
@@ -23,21 +26,35 @@ public class HackerNewsClient : IHackerNewsClient
     
     public async Task<IEnumerable<long>> GetBestIds(CancellationToken cancellationToken)
     {
-        var response = await _httpClient.GetAsync(GetBestStoriesUrl, cancellationToken);
-
-        if (!response.IsSuccessStatusCode)
+        await _semaphore.WaitAsync(cancellationToken);
+        var isReleased = false;
+        try
         {
-            throw new HttpRequestException($"Request failed with status code: {response.StatusCode}");
-        }
+            var response = await _httpClient.GetAsync(GetBestStoriesUrl, cancellationToken);
+            _semaphore.Release();
+            isReleased = true;
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttpRequestException($"Request failed with status code: {response.StatusCode}");
+            }
         
-        var jsonString = await response.Content.ReadAsStringAsync(cancellationToken);
-        var stories = JsonConvert.DeserializeObject<List<long>>(jsonString);
-        if (stories is null)
-        {
-            throw new Exception("Could not get stories");
-        }
+            var jsonString = await response.Content.ReadAsStringAsync(cancellationToken);
+            var stories = JsonConvert.DeserializeObject<List<long>>(jsonString);
+            if (stories is null)
+            {
+                throw new Exception("Could not get stories");
+            }
 
-        return stories;
+            return stories;
+        }
+        finally
+        {
+            if (!isReleased)
+            {
+                _semaphore.Release();
+            }
+        }
     }
 
     public async Task<Story> GetStory(long id, CancellationToken cancellationToken)
