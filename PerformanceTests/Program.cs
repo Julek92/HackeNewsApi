@@ -8,6 +8,7 @@ var httpClient = factory.CreateTestClient();
 
 var scenario = Scenario.Create("little_traffic", async context =>
     {
+        // begin with 1 element, but value is rising in every test
         var numberOfElements = context.InvocationNumber <= 200 ? context.InvocationNumber : 200;
 
         var request = Http.CreateRequest("GET", $"api/bestStories/{numberOfElements}");
