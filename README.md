@@ -2,9 +2,9 @@
 
 ## Introduction
 
-This is the recruitment exercise. The task text at the bottom of the page.
+This is the exercise for recruitment process. The objectives of the exercise are at the bottom of the page.
 
-This is .NET 9 Rest API to aggregate all best stories into one endpoint.
+The app is a .NET 9 REST API that exposes all top stories to the user in a single endpoint.
 In my application I focused mainly on performance. 
 I've created a thread safe cache to limit API calls.
 
